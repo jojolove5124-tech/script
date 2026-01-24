@@ -1,0 +1,154 @@
+--// Fixed Neon Script Hub
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local SoundService = game:GetService("SoundService")
+local RunService = game:GetService("RunService")
+
+local player = Players.LocalPlayer
+
+-- Colors
+local ACCENT = Color3.fromRGB(170, 0, 255)
+local BG1 = Color3.fromRGB(25, 25, 35)
+local BG2 = Color3.fromRGB(35, 35, 55)
+
+-- GUI
+local gui = Instance.new("ScreenGui")
+gui.Parent = player:WaitForChild("PlayerGui")
+gui.ResetOnSpawn = false
+
+-- Main Frame
+local main = Instance.new("Frame", gui)
+main.Size = UDim2.new(0, 360, 0, 460)
+main.Position = UDim2.new(0.5, -180, 0.5, -230)
+main.BackgroundColor3 = BG1
+main.BorderSizePixel = 0
+main.Active = true
+main.Draggable = true
+
+Instance.new("UICorner", main).CornerRadius = UDim.new(0, 14)
+
+-- Gradient
+local grad = Instance.new("UIGradient", main)
+grad.Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0, BG1),
+    ColorSequenceKeypoint.new(1, BG2)
+}
+
+-- Stroke
+local stroke = Instance.new("UIStroke", main)
+stroke.Color = ACCENT
+stroke.Thickness = 2
+stroke.Transparency = 0.4
+
+-- Top bar
+local top = Instance.new("Frame", main)
+top.Size = UDim2.new(1, 0, 0, 40)
+top.BackgroundTransparency = 1
+
+local title = Instance.new("TextLabel", top)
+title.Size = UDim2.new(1, -40, 1, 0)
+title.Position = UDim2.new(0, 15, 0, 0)
+title.BackgroundTransparency = 1
+title.Text = "Neon Script Hub"
+title.Font = Enum.Font.GothamBold
+title.TextSize = 20
+title.TextXAlignment = Enum.TextXAlignment.Left
+title.TextColor3 = ACCENT
+
+-- Close
+local close = Instance.new("TextButton", top)
+close.Size = UDim2.new(0, 32, 0, 32)
+close.Position = UDim2.new(1, -38, 0, 4)
+close.Text = "✕"
+close.Font = Enum.Font.GothamBold
+close.TextSize = 18
+close.TextColor3 = Color3.fromRGB(255, 90, 90)
+close.BackgroundTransparency = 1
+
+-- Buttons container
+local holder = Instance.new("Frame", main)
+holder.Size = UDim2.new(1, 0, 1, -50)
+holder.Position = UDim2.new(0, 0, 0, 50)
+holder.BackgroundTransparency = 1
+
+-- Button creator
+local function createButton(text, y, callback)
+    local btn = Instance.new("TextButton", holder)
+    btn.Size = UDim2.new(0, 320, 0, 42)
+    btn.Position = UDim2.new(0.5, -160, 0, y)
+    btn.Text = text
+    btn.Font = Enum.Font.Gotham
+    btn.TextSize = 16
+    btn.TextColor3 = Color3.new(1,1,1)
+    btn.BackgroundColor3 = BG2
+    btn.BorderSizePixel = 0
+
+    Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 10)
+
+    local s = Instance.new("UIStroke", btn)
+    s.Color = ACCENT
+    s.Transparency = 0.7
+
+    btn.MouseEnter:Connect(function()
+        TweenService:Create(btn, TweenInfo.new(0.15), {
+            BackgroundColor3 = ACCENT
+        }):Play()
+    end)
+
+    btn.MouseLeave:Connect(function()
+        TweenService:Create(btn, TweenInfo.new(0.15), {
+            BackgroundColor3 = BG2
+        }):Play()
+    end)
+
+    btn.MouseButton1Click:Connect(callback)
+end
+
+-- Close animation
+close.MouseButton1Click:Connect(function()
+    TweenService:Create(main, TweenInfo.new(0.25), {
+        Size = UDim2.new(0, 0, 0, 0),
+        Position = UDim2.new(0.5, 0, 0.5, 0)
+    }):Play()
+    task.wait(0.25)
+    gui:Destroy()
+end)
+
+-- Music
+local music = Instance.new("Sound", SoundService)
+music.SoundId = "rbxassetid://1843529635"
+music.Looped = true
+music.Volume = 1
+local musicOn = false
+
+-- Buttons
+createButton("флинг для утырков", 10, function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/K1LAS1K/Ultimate-Fling-GUI/main/flingscript.lua"))()
+end)
+
+createButton("все для сEкса", 60, function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
+end)
+
+createButton("разрыв жопы всем!!", 110, function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/REPLACE_IF_NEEDED"))()
+end)
+
+createButton("уйти за хлебом(неведимка)", 160, function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/3Rnd9rHf"))()
+end)
+
+createButton("для поднятия настроения", 210, function()
+    if musicOn then music:Pause() else music:Play() end
+    musicOn = not musicOn
+end)
+
+createButton("непробиваемая мразь", 260, function()
+    RunService.RenderStepped:Connect(function()
+        local c = player.Character
+        if c and c:FindFirstChild("Humanoid") then
+            c.Humanoid.WalkSpeed = 16
+            c.Humanoid.JumpPower = 50
+        end
+    end)
+end)
